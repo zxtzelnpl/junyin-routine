@@ -60,5 +60,5 @@ typings/
 .env
 
 .idea
-/config/
+server/config
 

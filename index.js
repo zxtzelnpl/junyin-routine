@@ -2,14 +2,10 @@ const Koa = require('koa')
 const mysql = require('mysql')
 const moment = require('moment')
 const {string1,string2,string3} = require('./server/query-strings')
+const mysql_config = require('./server/config/mysql')
 const app = new Koa()
 
-const connection = mysql.createConnection({
-    host     : '121.40.163.176',
-    user     : 'root',
-    password : 'vcl111111',
-    database : 'tx_securities'
-});
+const connection = mysql.createConnection(mysql_config);
 connection.connect();
 
 app.use(async(ctx,next) => {

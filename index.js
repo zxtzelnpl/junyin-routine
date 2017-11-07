@@ -84,7 +84,12 @@ async function query(connection,str){
 
 function format_html(arr){
     let strArr=arr.map((item,index)=>{
-        return JSON.stringify(item)
+        if(item.results2){
+            return `时间：${item.time} | 数据1：${item.results1} | 数据2：${item.results2} | 数据3：${item.results3}`
+        }
+        else{
+            return `时间：${item.time} | 数据1：${item.results1} `
+        }
     })
     return strArr.join('\n')
 }

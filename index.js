@@ -85,10 +85,10 @@ async function query(connection,str){
 function format_html(arr){
     let strArr=arr.map((item,index)=>{
         if(item.results2){
-            return `时间：${item.time} | 数据1：${item.results1} | 数据2：${item.results2} | 数据3：${item.results3}`
+            return `时间： ${item.time} | 新关注： ${item.results1} | 总注册： ${item.results2} | 注册未取消关注： ${item.results3}`
         }
         else{
-            return `时间：${item.time} | 数据1：${item.results1} `
+            return `时间： ${item.time} | 新关注： ${item.results1} `
         }
     })
     return strArr.join('\n')

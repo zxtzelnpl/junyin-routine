@@ -5,6 +5,9 @@ const {string1,string2,string3} = require('./server/query-strings')
 const mysql_config = require('./server/config/mysql')
 const app = new Koa()
 
+/**定义常量**/
+const port = process.env.PORT || 3000
+
 const connection = mysql.createConnection(mysql_config);
 connection.connect();
 
@@ -70,7 +73,7 @@ app.use(async(ctx) => {
     }
 })
 
-app.listen(3000);
+app.listen(port,()=>{console.log(`listen on ${port}`)});
 
 
 async function query(connection,str){

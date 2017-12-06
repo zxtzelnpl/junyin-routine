@@ -1,7 +1,7 @@
 const Koa = require('koa')
 const mysql = require('mysql')
 const moment = require('moment')
-const {string1,string2,string3} = require('./server/query-strings')
+const {string4,string2,string3} = require('./server/query-strings')
 const mysql_config = require('./server/config/mysql')
 const app = new Koa()
 
@@ -41,7 +41,7 @@ app.use(async(ctx) => {
         for(let i=1;i<=num;i++){
             let obj
             let time = moment().subtract(i,'days').format('YYYY-MM-DD')
-            let str1 = string1(time)
+            let str1 = string4(time)
             let str2 = string2(time)
             let str3 = string3(time)
             if(i===1){

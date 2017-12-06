@@ -30,9 +30,13 @@ exports.string1 =  function (time) {
 }
 
 exports.string2 =  function (time){
-    return `SELECT COUNT(DISTINCT openid) FROM t_user WHERE create_time < "${time} 00:00:00";`
+    return `SELECT COUNT(DISTINCT openid) FROM t_user WHERE create_time < "${time} 23:59:59";`
 }
 
 exports.string3= function (time){
-    return `SELECT COUNT(DISTINCT openid) FROM t_user WHERE create_time < "${time} 00:00:00" AND openid IN (SELECT wx_user_openid FROM wx_user_info WHERE subscribe != 0);`
+    return `SELECT COUNT(DISTINCT openid) FROM t_user WHERE create_time < "${time} 23:59:59" AND openid IN (SELECT wx_user_openid FROM wx_user_info WHERE subscribe != 0);`
+}
+
+exports.string4 = function(time){
+    return `SELECT channel, wx_user_openid FROM wx_user_info WHERE updated_at BETWEEN "${time} 00:00:00" AND "${time} 23:59:59" AND wx_user_openid NOT IN (SELECT openid FROM t_user WHERE openid IS NOT NULL);`
 }

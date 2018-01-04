@@ -40,3 +40,7 @@ exports.string3= function (time){
 exports.string4 = function(time){
     return `SELECT channel, wx_user_openid FROM wx_user_info WHERE updated_at BETWEEN "${time} 00:00:00" AND "${time} 23:59:59" AND wx_user_openid NOT IN (SELECT openid FROM t_user WHERE openid IS NOT NULL);`
 }
+
+exports.orderString = function(day){
+    return `SELECT * FROM t_order WHERE TO_DAYS(NOW())-TO_DAYS(pay_time)<=${day} AND TO_DAYS(pay_time) != TO_DAYS(NOW()) ORDER BY pay_time;`
+}

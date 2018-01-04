@@ -6,16 +6,21 @@
 </head>
 <body>
     <div>Hello balabala</div>
+    <button id="showdata">显示数据</button>
     <div id="data"></div>
     <hr>
     <div>This is readToDownLoad</div>
-    <button>下载</button>
+    <a href="/order/1">下载</a>
 </body>
 <script>
-    fetch('/query/1')
-        .then(res=>res.text())
-        .then(text=>{
-          document.getElementById('data').innerHTML = text
-        })
+    document.getElementById('showdata').addEventListener('click',()=>{
+      fetch('/query/1')
+          .then(res=>res.text())
+          .then(text=>{
+            document.getElementById('data').innerHTML = text
+          })
+    })
+
+
 </script>
 </html>

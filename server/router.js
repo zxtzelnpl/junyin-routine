@@ -63,7 +63,6 @@ router.get('/order/:num', async (ctx, next) => {
 
   console.log(ctx)
   console.log('this is begin'+n)
-  console.log(typeof stream)
   n++
 
   let connection = ctx.connection

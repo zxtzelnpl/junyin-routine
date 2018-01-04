@@ -1,98 +1,51 @@
+const path = require('path')
 const Koa = require('koa')
 const mysql = require('mysql')
-const moment = require('moment')
-const {string4,string2,string3} = require('./server/query-strings')
+const serve = require('koa-better-serve')
+const session = require('koa-session')
+const favicon = require('koa-favicon')
+
 const mysql_config = require('./server/config/mysql')
 const app = new Koa()
+const router = require('./server/router')
 
 /**定义常量**/
 const port = process.env.PORT || 3000
+const CONFIG = {
+  key: 'koa:sess', /** (string) cookie key (default is koa:sess) */
+  /** (number || 'session') maxAge in ms (default is 1 days) */
+  /** 'session' will result in a cookie that expires when session/browser is closed */
+  /** Warning: If a session cookie is stolen, this cookie will never expire */
+  maxAge: 86400000,
+  overwrite: true, /** (boolean) can overwrite or not (default true) */
+  httpOnly: true, /** (boolean) httpOnly or not (default true) */
+  signed: true, /** (boolean) signed or not (default true) */
+  rolling: false, /** (boolean) Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown. default is false **/
+}
 
 const connection = mysql.createConnection(mysql_config);
 connection.connect();
 
-app.use(async(ctx,next) => {
-    try {
-        if(ctx.request.url === '/favicon.ico'){
-            return ctx.body = 'no favicon'
-        }
-        if(ctx.request.url.indexOf('/query')>-1){
-            let reg = /\/query\/([0-9])/i
-            let results = reg.exec(ctx.request.url)
-            let num = results?parseInt(results[1]):1
-            ctx.data = {
-                num:num
-            }
-            ctx.body = 'Hello world'
-            return await next();
-        }
-        ctx.body = 'Hello world'
-    } catch (err) {
-        ctx.body = { message: err.message }
-        ctx.status = err.status || 500
-    }
-})
 
-
-app.use(async(ctx) => {
-    try{
-        let num = ctx.data.num
-        let arr = []
-        for(let i=1;i<=num;i++){
-            let obj
-            let time = moment().subtract(i,'days').format('YYYY-MM-DD')
-            let str1 = string4(time)
-            let str2 = string2(time)
-            let str3 = string3(time)
-            if(i===1){
-                let results1 =await query(connection,str1)
-                let results2 =await query(connection,str2)
-                let results3 =await query(connection,str3)
-                obj = {
-                    time,
-                    results1:results1.length,
-                    results2:results2[0]["COUNT(DISTINCT openid)"],
-                    results3:results3[0]["COUNT(DISTINCT openid)"],
-                }
-            }
-            else{
-                let results1 =await query(connection,str1)
-                obj = {
-                    time,
-                    results1:results1.length,
-                }
-            }
-
-            arr.unshift(obj)
-        }
-        ctx.body = format_html(arr)
-
-    }catch(err){
-        ctx.body = { message: err.message }
-        ctx.status = err.status || 500
-    }
-})
-
-app.listen(port,()=>{console.log(`listen on ${port}`)});
-
-
-async function query(connection,str){
-    return new Promise((resolve,reject)=>{
-        connection.query(str,(error, results, fields)=>{
-            if(error){reject(error)}
-            resolve(results)
-        })
+app
+    .use(async (ctx,next) => {
+      console.log('begin')
+      ctx.connection = connection
+      await next()
+      console.log('end')
     })
-}
+    .use(session(CONFIG, app))
+    .use(favicon(__dirname + '/favicon.ico'))
+    .use(router.routes())
+    .use(router.allowedMethods())
+    .use(serve(path.join(__dirname, './src'), '/src'))
 
-function format_html(arr){
-    let strArr=arr.map((item,index)=>{
-        if(item.results2){
-            return `时间： ${item.time} | 新关注： ${item.results1} | 总注册： ${item.results2} | 注册未取消关注： ${item.results3}`
-        }
-        else{
-            return `时间： ${item.time} | 新关注： ${item.results1} `
-        }
-    })
-    return strArr.join('\n')
-}
+app.listen(port, () => {
+  console.log(`listen on ${port}`)
+});
+
+
+
+
+
+

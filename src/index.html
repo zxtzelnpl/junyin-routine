@@ -5,6 +5,17 @@
     <title>Page</title>
 </head>
 <body>
-    Page Welcome to this cool world
+    <div>Hello balabala</div>
+    <div id="data"></div>
+    <hr>
+    <div>This is readToDownLoad</div>
+    <button>下载</button>
 </body>
+<script>
+    fetch('/query/1')
+        .then(res=>res.text())
+        .then(text=>{
+          document.getElementById('data').innerHTML = text
+        })
+</script>
 </html>

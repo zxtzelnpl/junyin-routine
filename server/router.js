@@ -1,3 +1,4 @@
+const path = require('path')
 const Router = require('koa-router')
 const koaBody = require('koa-body')
 const {readFile} = require('../tools/common')

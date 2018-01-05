@@ -5,24 +5,66 @@
     <title>Page</title>
 </head>
 <body>
-    <div>Hello balabala</div>
-    <button id="showdata">显示数据</button>
-    <div id="data"></div>
-    <hr>
-    <div>This is readToDownLoad</div>
-    <button id="download">下载</button>
-    <a href="/order/1">下载</a>
+<div>Some strange datas in <span>1</span>
+    <button>+</button>
+    <button>-</button>
+</div>
+<button id="showdata">show</button>
+<div id="data"></div>
+<hr>
+<div>download the order datas in <span>1</span>
+    <button>+</button>
+    <button>-</button>
+</div>
+<button id="download">down</button>
+<a style="visibility: hidden" href="/order/1">下载</a>
 </body>
 <script>
-    document.getElementById('showdata').addEventListener('click',()=>{
-      fetch('/query/1')
-          .then(res=>res.text())
-          .then(text=>{
-            document.getElementById('data').innerHTML = text
-          })
-    })
+  // document.getElementById('showdata').addEventListener('click',()=>{
+  //   fetch('/query/1')
+  //       .then(res=>res.text())
+  //       .then(text=>{
+  //         document.getElementById('data').innerHTML = text
+  //       })
+  // })
 
-    let download = document.getElementById('download')
+  let buttons = document.querySelectorAll('button')
+  buttons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      let mark = e.target.innerHTML
+      if (mark === '-') {
+        let span = e.target.parentNode.querySelector('span')
+        let num = parseInt(span.innerHTML)
+        if (num > 1) {
+          span.innerHTML = --num
+        }
+      }
+      else if (mark === '+') {
+        let span = e.target.parentNode.querySelector('span')
+        let num = parseInt(span.innerHTML)
+        span.innerHTML = ++num
+      }
+      else if (mark === 'show') {
+        let span = e.target.previousElementSibling.querySelector('span')
+        let url = `/query/${span.innerHTML}`
+        fetch(url)
+            .then(res => res.text())
+            .then(text => {
+              document.getElementById('data').innerHTML = text
+            })
+      }
+      else if (mark === 'down') {
+        let span = e.target.previousElementSibling.querySelector('span')
+        let url = `/order/${span.innerHTML}`
+        let a = document.querySelector('a')
+        a.setAttribute('href', url)
+        a.click()
+
+      }
+    })
+  })
+
+  let download = document.getElementById('download')
 
 </script>
 </html>

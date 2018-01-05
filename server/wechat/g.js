@@ -47,7 +47,8 @@ Wechat.prototype.updateAccessToken = async function () {
   let url = api.accessToken + '&appid=' + appID + '&secret=' + appSecret
   let response = await request({url: url, json: true})//{ errcode: 40164, errmsg: 'invalid ip 101.81.67.16, not in whitelist hint: [vEJBZa04161512]' }
   console.log(response)
-  let data = response[1]
+  let data = response
+  console.log(response[1])
   let now = (new Date()).getTime()
   data.expires_in = now + (data.expires_in - 20) * 1000
   return data

@@ -1,18 +1,18 @@
 const path = require('path')
 const Router = require('koa-router')
 const koaBody = require('koa-body')
-const {readFile} = require('../tools/common')
 const {string4, string2, string3, orderString} = require('./query-strings')
 const router = new Router()
 const moment = require('moment')
 const Excel = require('exceljs')
 const Stream = require('stream')
 const wechat = require('./wechat/g')
+const util = require('./libs/util')
 
 
 router.get('/', async (ctx) => {
   try {
-    let data = await readFile(path.join(__dirname, '../src/index.html'))
+    let data = await util.readFileAsync(path.join(__dirname, '../src/index.html'))
     ctx.type = 'html'
     ctx.body = data
   }
@@ -21,9 +21,10 @@ router.get('/', async (ctx) => {
     ctx.status = err.status || 500
   }
 })
-router.get('/me', async (ctx,next) => {
-  ctx.body = 'me'
-  next()
+router.get('/me', async (ctx) => {
+  let data = await readFile('./server/config/wechat.txt')
+  let me = JSON.parse(data)
+  ctx.body=me
 })
 
 router.get('/us', async (ctx) => {
@@ -146,6 +147,7 @@ router.get('/order/:num', koaBody(), async (ctx, next) => {
 })
 router.get('/weixin',wechat)
 
+
 function query (connection, str) {
   return new Promise((resolve, reject) => {
     connection.query(str, (error, results, fields) => {
@@ -167,6 +169,10 @@ function format_html (arr) {
     }
   })
   return strArr.join('\n')
+}
+
+function readFile(url){
+  return util.readFileAsync(url)
 }
 
 

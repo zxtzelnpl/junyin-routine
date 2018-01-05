@@ -10,7 +10,7 @@ const Stream = require('stream')
 
 router.get('/', async (ctx, next) => {
   try {
-    let data = await readFile('./src/index.html')
+    let data = await readFile(path.join(__dirname, './src/index.html'))
     ctx.response.type = 'html'
     ctx.response.body = data
   }

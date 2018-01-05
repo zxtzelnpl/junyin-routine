@@ -58,17 +58,13 @@ router.get('/query/:num', async (ctx) => {
     ctx.status = err.status || 500
   }
 })
-let n=1;
-router.get('/order/:num', async (ctx, next) => {
+router.get('/order/:num',koaBody(), async (ctx, next) => {
 
-  console.log(ctx)
-  console.log('this is begin'+n)
-  n++
+  console.log('this is begin')
 
   let connection = ctx.connection
   let stream = new Stream.Transform()
-  stream._transform = function (chunk,encoding,done)
-  {
+  stream._transform = function (chunk, encoding, done) {
     this.push(chunk)
     done()
   }
@@ -90,22 +86,52 @@ router.get('/order/:num', async (ctx, next) => {
         firstSheet: 0, activeTab: 1, visibility: 'visible'
       }
     ]
-    let worksheet = workbook.addWorksheet('订单详情', {properties: {tabColor: {argb: 'FFC0000'}}});
+    let worksheet = workbook.addWorksheet('订单列表', {properties: {tabColor: {argb: 'FFC0000'}}});
     worksheet.columns = [
-      {header: 'Id', key: 'id', width: 10},
-      {header: 'Name', key: 'name', width: 32},
-      {header: 'D.O.B.', key: 'DOB', width: 10}
+      {header: '渠道', key: 'channel', width: 15},
+      {header: '下单时间', key: 'create_time', width: 18},
+      {header: '交易时间', key: 'pay_time', width: 18},
+      {header: '下单人', key: 'user_name', width: 12},
+      {header: '手机号', key: 'user_phone', width: 12},
+      {header: '商品名称', key: 'produce_name', width: 10},
+      {header: '商品类型', key: 'type', width: 10},
+      {header: '订阅期数', key: 'periods', width: 10},
+      {header: '订单金额', key: 'account_money', width: 10},
+      {header: '订阅状态', key: 'subscribe_status', width: 10},
+      {header: '订单状态', key: 'order_status', width: 10},
+      {header: '备注', key: 'remark', width: 10},
     ]
 
-    worksheet.addRow({id: 1, name: 'John Doe', DOB: new Date(1970, 1, 1)})
-    worksheet.addRow({id: 2, name: 'Jane Doe', DOB: new Date(1965, 1, 7)})
+    results.forEach(result => {
+      let {channel,create_time, pay_time, user_name, user_phone, produce_name, type, periods, account_money, subscribe_status, order_status, remark} = result
+      let typeName,subscribeStatusName
+      if (type === 1){
+        typeName = '投资锦囊'
+      }
+      if(subscribe_status===1){
+        subscribeStatusName='正常'
+      }
+      worksheet.addRow({
+        channel:channel,
+        create_time: moment(create_time).format('YYYY-MM-DD HH:mm'),
+        pay_time: moment(pay_time).format('YYYY-MM-DD HH:mm'),
+        user_name: user_name,
+        user_phone: user_phone,
+        produce_name: produce_name,
+        type: typeName,
+        periods: periods,
+        account_money: account_money,
+        subscribe_status: subscribeStatusName,
+        order_status: '支付成功',
+        remark: remark
+      })
+    })
+
     await workbook.xlsx.write(stream)
-    // ctx.set('Content-Type', 'application/vnd.openxmlformats');
     ctx.type = 'application/vnd.openxmlformats'
-    ctx.response.attachment("o2olog.xlsx")
-    // ctx.set("Content-Disposition", "attachment; filename=" + "o2olog.xlsx");
-    ctx.body=stream
+    ctx.attachment(`${moment().subtract(1,'days').format('YYYY年MM月DD日订单信息')}.xlsx`)
     stream.end()
+    ctx.body = stream
     console.log('this is end')
   }
   catch (err) {
@@ -114,7 +140,7 @@ router.get('/order/:num', async (ctx, next) => {
   }
 })
 
-async function query(connection, str) {
+async function query (connection, str) {
   return new Promise((resolve, reject) => {
     connection.query(str, (error, results, fields) => {
       if (error) {
@@ -125,7 +151,7 @@ async function query(connection, str) {
   })
 }
 
-function format_html(arr) {
+function format_html (arr) {
   let strArr = arr.map((item, index) => {
     if (item.results2) {
       return `时间： ${item.time} | 新关注： ${item.results1} | 总注册： ${item.results2} | 注册未取消关注： ${item.results3}`

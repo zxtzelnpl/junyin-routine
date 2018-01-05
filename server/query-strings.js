@@ -42,5 +42,5 @@ exports.string4 = function(time){
 }
 
 exports.orderString = function(day){
-    return `SELECT * FROM t_order WHERE TO_DAYS(NOW())-TO_DAYS(pay_time)<=${day} AND TO_DAYS(pay_time) != TO_DAYS(NOW()) ORDER BY pay_time;`
+    return `SELECT * FROM t_order WHERE TO_DAYS(NOW())-TO_DAYS(pay_time)<=${day} AND TO_DAYS(pay_time) != TO_DAYS(NOW()) AND order_status=1 ORDER BY pay_time;`
 }

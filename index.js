@@ -9,11 +9,12 @@ const favicon = require('koa-favicon')
 
 /**引用router**/
 const router = require('./server/router')
-const config = require('./server/config')
+const mysqlConfig = require('./server/config/mysql')
+const sessionConfig = require('./server/config/session')
 
 /**定义常量**/
 const port = process.env.PORT || 3000
-const connection = mysql.createConnection(config.mysql)
+const connection = mysql.createConnection(mysqlConfig)
 connection.connect()
 
 
@@ -26,7 +27,7 @@ app
       console.log('end')
     })
     .use(inner1)
-    .use(session(config.session, app))
+    .use(session(sessionConfig, app))
     .use(inner2)
     .use(favicon(__dirname + '/favicon.ico'))
     .use(inner3)

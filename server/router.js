@@ -21,13 +21,23 @@ router.get('/', async (ctx) => {
     ctx.status = err.status || 500
   }
 })
+router.get('/MP_verify_ASHmayikOYnKBAss.txt',async (ctx) => {
+  try{
+    let _data = await readFile(path.join(__dirname,'../src/MP_verify_ASHmayikOYnKBAss.txt'))
+    let data = String(_data)
+    ctx.body=data
+  }
+  catch(err){
+    ctx.body = {message: err.message}
+    ctx.status = err.status || 500
+  }
+})
 router.get('/me', async (ctx) => {
   console.info(__dirname)
   let data = await readFile(path.join(__dirname,'./config/wechat.txt'))
   let me = JSON.parse(data)
   ctx.body=me
 })
-
 router.get('/us', async (ctx) => {
   ctx.body = ctx._matchedRoute + '---' + ctx._matchedRouteName
 })

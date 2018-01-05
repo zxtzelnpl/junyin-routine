@@ -22,7 +22,8 @@ router.get('/', async (ctx) => {
   }
 })
 router.get('/me', async (ctx) => {
-  let data = await readFile('./server/config/wechat.txt')
+  console.info(__dirname)
+  let data = await readFile(path.join(__dirname,'./config/wechat.txt'))
   let me = JSON.parse(data)
   ctx.body=me
 })

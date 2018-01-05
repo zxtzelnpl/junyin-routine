@@ -7,6 +7,7 @@ const router = new Router()
 const moment = require('moment')
 const Excel = require('exceljs')
 const Stream = require('stream')
+const wechat = require('./wechat/g')
 
 
 router.get('/', async (ctx) => {
@@ -143,6 +144,7 @@ router.get('/order/:num', koaBody(), async (ctx, next) => {
     ctx.status = err.status || 500
   }
 })
+router.get('/weixin',wechat)
 
 function query (connection, str) {
   return new Promise((resolve, reject) => {

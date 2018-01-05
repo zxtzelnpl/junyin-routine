@@ -9,18 +9,25 @@ const Excel = require('exceljs')
 const Stream = require('stream')
 
 
-router.get('/', async (ctx, next) => {
+router.get('/', async (ctx) => {
   try {
     let data = await readFile(path.join(__dirname, '../src/index.html'))
-    ctx.response.type = 'html'
-    ctx.response.body = data
+    ctx.type = 'html'
+    ctx.body = data
   }
   catch (err) {
     ctx.body = {message: err.message}
     ctx.status = err.status || 500
   }
 })
+router.get('/me', async (ctx,next) => {
+  ctx.body = 'me'
+  next()
+})
 
+router.get('/us', async (ctx) => {
+  ctx.body = ctx._matchedRoute + '---' + ctx._matchedRouteName
+})
 router.get('/query/:num', async (ctx) => {
   try {
     let num = ctx.params.num
@@ -59,10 +66,7 @@ router.get('/query/:num', async (ctx) => {
     ctx.status = err.status || 500
   }
 })
-router.get('/order/:num',koaBody(), async (ctx, next) => {
-
-  console.log('this is begin')
-
+router.get('/order/:num', koaBody(), async (ctx, next) => {
   let connection = ctx.connection
   let stream = new Stream.Transform()
   stream._transform = function (chunk, encoding, done) {
@@ -104,16 +108,16 @@ router.get('/order/:num',koaBody(), async (ctx, next) => {
     ]
 
     results.forEach(result => {
-      let {channel,create_time, pay_time, user_name, user_phone, produce_name, type, periods, account_money, subscribe_status, order_status, remark} = result
-      let typeName,subscribeStatusName
-      if (type === 1){
+      let {channel, create_time, pay_time, user_name, user_phone, produce_name, type, periods, account_money, subscribe_status, order_status, remark} = result
+      let typeName, subscribeStatusName
+      if (type === 1) {
         typeName = '投资锦囊'
       }
-      if(subscribe_status===1){
-        subscribeStatusName='正常'
+      if (subscribe_status === 1) {
+        subscribeStatusName = '正常'
       }
       worksheet.addRow({
-        channel:channel,
+        channel: channel,
         create_time: moment(create_time).format('YYYY-MM-DD HH:mm'),
         pay_time: moment(pay_time).format('YYYY-MM-DD HH:mm'),
         user_name: user_name,
@@ -130,10 +134,9 @@ router.get('/order/:num',koaBody(), async (ctx, next) => {
 
     await workbook.xlsx.write(stream)
     ctx.type = 'application/vnd.openxmlformats'
-    ctx.attachment(`${moment().subtract(1,'days').format('YYYY年MM月DD日订单信息')}.xlsx`)
+    ctx.attachment(`${moment().subtract(1, 'days').format('YYYY年MM月DD日订单信息')}.xlsx`)
     stream.end()
     ctx.body = stream
-    console.log('this is end')
   }
   catch (err) {
     ctx.body = {message: err.message}
@@ -141,7 +144,7 @@ router.get('/order/:num',koaBody(), async (ctx, next) => {
   }
 })
 
-async function query (connection, str) {
+function query (connection, str) {
   return new Promise((resolve, reject) => {
     connection.query(str, (error, results, fields) => {
       if (error) {
@@ -163,5 +166,6 @@ function format_html (arr) {
   })
   return strArr.join('\n')
 }
+
 
 module.exports = router

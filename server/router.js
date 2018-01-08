@@ -169,7 +169,8 @@ router.post('/weixin',xmlParser(),async (ctx)=>{
     'MsgType':'text',
     'Content':xml.Content[0],
   })
-  ctx.body = util.jsonToXml(data)
+  console.log(data)
+  ctx.body = data
 })
 
 

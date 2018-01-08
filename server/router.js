@@ -8,6 +8,7 @@ const Excel = require('exceljs')
 const Stream = require('stream')
 const wechat = require('./wechat/g')
 const util = require('./libs/util')
+const xmlParse  = require('../tools/xmlParse')
 
 
 router.get('/', async (ctx) => {
@@ -157,8 +158,8 @@ router.get('/order/:num',  async (ctx, next) => {
   }
 })
 router.get('/weixin',wechat)
-router.post('/weixin',koaBody(),async(ctx,next)=>{
-  console.log(ctx.body)
+router.post('/weixin',koaBody(),async (ctx)=>{
+  console.log(ctx.request.body)
 })
 
 

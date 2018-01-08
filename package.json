@@ -22,6 +22,7 @@
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
     "sha1": "^1.1.1",
-    "stream": "0.0.2"
+    "stream": "0.0.2",
+    "xml2js": "^0.4.19"
   }
 }

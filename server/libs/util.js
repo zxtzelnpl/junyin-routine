@@ -1,6 +1,7 @@
 'use strict'
 
 const fs=require('fs');
+const xml2js = require('xml2js')
 
 exports.readFileAsync = function(fpath,encoding){
   return new Promise(function(resolve,reject){
@@ -18,4 +19,9 @@ exports.writeFileAsync = function(fpath,content){
       else{ resolve()}
     })
   })
+}
+
+exports.jsonToXml = (obj) => {
+  const builder = new xml2js.Builder()
+  return builder.buildObject(obj)
 }

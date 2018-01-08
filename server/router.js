@@ -159,7 +159,7 @@ router.get('/order/:num',  async (ctx, next) => {
 })
 router.get('/weixin',wechat)
 router.post('/weixin',xmlParser(),async (ctx)=>{
-  console.log(ctx.req.body)
+  console.log(ctx.request.body)
 })
 
 

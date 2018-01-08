@@ -162,13 +162,7 @@ router.post('/weixin',xmlParser(),async (ctx)=>{
   console.log(ctx.request.body)
   ctx.res.setHeader('Content-Type', 'application/xml')
   let xml  = ctx.request.body.xml
-  let data = util.jsonToXml({
-    'ToUserName':xml.FromUserName[0],
-    'FromUserName':xml.ToUserName[0],
-    'CreateTime':moment().format('X'),
-    'MsgType':'text',
-    'Content':xml.Content[0],
-  })
+  let data = `<xml> <ToUserName>< ![CDATA${xml.ToUserName[0]}] ]</ToUserName> <FromUserName>< ![CDATA[${xml.FromUserName[0]}] ]></FromUserName> <CreateTime>${moment()}</CreateTime> <MsgType>< ![CDATA[text] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>`
   console.log(data)
   ctx.body = data
 })

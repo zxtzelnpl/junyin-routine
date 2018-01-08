@@ -79,7 +79,7 @@ router.get('/query/:num', async (ctx) => {
     ctx.status = err.status || 500
   }
 })
-router.get('/order/:num', koaBody(), async (ctx, next) => {
+router.get('/order/:num',  async (ctx, next) => {
   let connection = ctx.connection
   let stream = new Stream.Transform()
   stream._transform = function (chunk, encoding, done) {
@@ -157,6 +157,9 @@ router.get('/order/:num', koaBody(), async (ctx, next) => {
   }
 })
 router.get('/weixin',wechat)
+router.post('/weixin',koaBody(),async(ctx,next)=>{
+  console.log(ctx.body)
+})
 
 
 function query (connection, str) {

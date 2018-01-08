@@ -13,22 +13,6 @@ function Wechat (opts) {
   this.appSecret = opts.appSecret
   this.getAccessToken = opts.getAccessToken
   this.saveAccessToken = opts.saveAccessToken
-  // try {
-  //   let file = await this.getAccessToken()
-  //   let data = JSON.parse(file)
-  //   if (!this.isValidAccessToken(data)) {
-  //     data = await this.updateAccessToken()
-  //   }
-  //   this.access_token = data.access_token
-  //   this.expires_in = data.expires_in
-  //   await this.saveAccessToken(data)
-  // }
-  // catch (e) {
-  //   let data =await  this.updateAccessToken()
-  //   this.access_token = data.access_token
-  //   this.expires_in = data.expires_in
-  //   await this.saveAccessToken(data)
-  // }
 }
 
 Wechat.prototype.isValidAccessToken = function (data) {

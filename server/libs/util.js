@@ -22,11 +22,6 @@ exports.writeFileAsync = function(fpath,content){
   })
 }
 
-exports.jsonToXml = (obj) => {
-  const builder = new xml2js.Builder()
-  return builder.buildObject(obj)
-}
-
 exports.tpl = function(content,message){
   let info = {},
       type = 'text',
@@ -44,5 +39,14 @@ exports.tpl = function(content,message){
   info.toUserName = fromUserName
   info.fromUserName = toUserName
 
-  return tpl.compiled(info)
+  const xml2js = require('xml2js')
+  let build = new xml2js.Builder({
+    // rootName:'xml',
+    // cdata:true
+  })
+  return build.buildObject({
+    xml:info
+  })
+
+  // return tpl.compiled(info)
 }

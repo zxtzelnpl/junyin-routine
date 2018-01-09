@@ -1,6 +1,9 @@
-let str = '/query/0'
-
-let reg = /\/query\/([0-9])/i
-
-let results = reg.exec(str)
-console.log(results)
+const xml2js = require('xml2js')
+let build = new xml2js.Builder({
+  // rootName:'xml',
+  // cdata:true
+})
+console.log(build.buildObject({xml:{
+  'name':'zxg',
+  'age':19
+}}))

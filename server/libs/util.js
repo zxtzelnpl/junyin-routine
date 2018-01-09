@@ -4,7 +4,7 @@ const fs=require('fs');
 const xml2js = require('xml2js')
 let build = new xml2js.Builder({
   rootName:'xml',
-  cdata:true
+  cdata:false
 })
 
 exports.readFileAsync = function(fpath,encoding){

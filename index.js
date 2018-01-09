@@ -9,6 +9,9 @@ const favicon = require('koa-favicon')
 
 /**引用router**/
 const router = require('./server/router')
+const wechat = require('./server/wechat/g')
+
+/**引用config**/
 const mysqlConfig = require('./server/config/mysql')
 const sessionConfig = require('./server/config/session')
 
@@ -20,6 +23,7 @@ connection.connect()
 
 const app = new Koa()
 app.context.connection = connection
+app.context.wechat = wechat.accessToken()
 app
     .use(inner1)
     .use(session(sessionConfig, app))
@@ -41,6 +45,7 @@ app.listen(port, () => {
 
 async function inner1(ctx,next){
   console.log('inner1 begin')
+  console.log(ctx.wechat)
   await next()
   console.log('inner1 end')
 }

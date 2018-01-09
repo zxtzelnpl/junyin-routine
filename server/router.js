@@ -1,3 +1,5 @@
+'use strict'
+
 const path = require('path')
 const Router = require('koa-router')
 const koaBody = require('koa-body')

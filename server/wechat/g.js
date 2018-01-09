@@ -102,3 +102,24 @@ exports.check = async (ctx,next) =>{
     await next()
   }
 }
+
+exports.accessToken = async () => {
+  let wechat = new Wechat(config)
+  try {
+    let file = await wechat.getAccessToken()
+    let data = JSON.parse(file)
+    if (!wechat.isValidAccessToken(data)) {
+      data = await wechat.updateAccessToken()
+    }
+    wechat.access_token = data.access_token
+    wechat.expires_in = data.expires_in
+    await wechat.saveAccessToken(data)
+  }
+  catch (e) {
+    let data = await wechat.updateAccessToken()
+    wechat.access_token = data.access_token
+    wechat.expires_in = data.expires_in
+    await wechat.saveAccessToken(data)
+  }
+  return wechat
+}

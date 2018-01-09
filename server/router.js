@@ -160,17 +160,16 @@ router.get('/order/:num', async (ctx, next) => {
 router.get('/weixin', wechat)
 router.post('/weixin', xmlParser(), async (ctx) => {
   console.log(ctx.request.body)
-  ctx.res.setHeader('Content-Type', 'application/xml')
-  let xml = ctx.request.body.xml
-  let data = `<xml>
-                <ToUserName>${xml.ToUserName[0]}</ToUserName>
-                <FromUserName>${xml.FromUserName[0]}</FromUserName>
-                <CreateTime>${moment().format('X')}</CreateTime>
-                <MsgType>text</MsgType>
-                <Content>你好</Content>
-            </xml>`
-  console.log(data)
-  ctx.body = data
+  let _message = ctx.request.body.xml
+  let message = {
+    ToUserName:_message.ToUserName[0],
+    FromUserName:_message.FromUserName[0],
+  }
+  let xml = util.tpl('你好啊',message)
+  ctx.status = 200
+  ctx.type = 'application/xml'
+  ctx.body =xml
+
 })
 
 

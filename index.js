@@ -23,8 +23,15 @@ connection.connect()
 /**生成app实例**/
 const app = new Koa()
 app.context.connection = connection
-process.env.NODE_ENV!=='env'&&(app.context.wechat = wechat.accessToken())
-app.context.wechat = wechat.accessToken()
+wechat
+    .accessToken()
+    .then(result => {
+      app.context.wechat = result
+    })
+    .catch(err =>{
+      console.log('There is someting wrong with get wechat\'accsseToken',err)
+    })
+
 app
     .use(inner1)
     .use(session(sessionConfig, app))
@@ -44,35 +51,44 @@ app.listen(port, () => {
 });
 
 
-async function inner1(ctx,next){
+async function inner1 (ctx, next) {
   console.log('inner1 begin')
   console.log(ctx.wechat)
+  console.log(typeof ctx.wechat)
+  for (let key in ctx.wechat) {
+    console.log(key)
+  }
   await next()
   console.log('inner1 end')
 }
-async function inner2(ctx,next){
+
+async function inner2 (ctx, next) {
   console.log('inner2 begin')
   await next()
   console.log('inner2 end')
 }
-async function inner3(ctx,next){
+
+async function inner3 (ctx, next) {
   console.log('inner3 begin')
   await next()
   console.log('inner3 end')
 }
-async function inner4(ctx,next){
+
+async function inner4 (ctx, next) {
   console.log('inner4 begin')
   await next()
   console.log('inner4 end')
 }
-async function inner5(ctx,next){
+
+async function inner5 (ctx, next) {
   console.log('inner5 begin')
   await next()
   console.log('inner5 end')
 }
-async function inner6(ctx,next){
+
+async function inner6 (ctx, next) {
   console.log('inner6 begin')
-  ctx.body='inner6'
+  ctx.body = 'inner6'
   console.log('inner6 end')
 }
 

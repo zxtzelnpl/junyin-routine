@@ -79,7 +79,7 @@ exports.g = async function (ctx) {
   }
 }
 
-exports.check = (ctx,next) =>{
+exports.check = async (ctx,next) =>{
   let token = config.token
   let nonce = ctx.query.nonce
   let timestamp = ctx.query.timestamp
@@ -99,6 +99,6 @@ exports.check = (ctx,next) =>{
   }
   else {
     console.log('post验证通过')
-    next()
+    await next()
   }
 }

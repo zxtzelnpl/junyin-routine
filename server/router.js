@@ -166,6 +166,7 @@ router.post('/weixin', xmlParser(), async (ctx) => {
     FromUserName:_message.FromUserName[0],
   }
   let xml = util.tpl('你好啊',message)
+  console.log(xml)
   ctx.status = 200
   ctx.type = 'application/xml'
   ctx.body =xml

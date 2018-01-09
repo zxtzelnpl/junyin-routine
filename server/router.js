@@ -1,7 +1,7 @@
 const path = require('path')
 const Router = require('koa-router')
 const koaBody = require('koa-body')
-const xmlParser  = require('koa-xml-body')
+const xmlParser = require('koa-xml-body')
 const {string4, string2, string3, orderString} = require('./query-strings')
 const router = new Router()
 const moment = require('moment')
@@ -22,22 +22,22 @@ router.get('/', async (ctx) => {
     ctx.status = err.status || 500
   }
 })
-router.get('/MP_verify_ASHmayikOYnKBAss.txt',async (ctx) => {
-  try{
-    let _data = await readFile(path.join(__dirname,'../src/MP_verify_ASHmayikOYnKBAss.txt'))
+router.get('/MP_verify_ASHmayikOYnKBAss.txt', async (ctx) => {
+  try {
+    let _data = await readFile(path.join(__dirname, '../src/MP_verify_ASHmayikOYnKBAss.txt'))
     let data = String(_data)
-    ctx.body=data
+    ctx.body = data
   }
-  catch(err){
+  catch (err) {
     ctx.body = {message: err.message}
     ctx.status = err.status || 500
   }
 })
 router.get('/me', async (ctx) => {
   console.info(__dirname)
-  let data = await readFile(path.join(__dirname,'./config/wechat.txt'))
+  let data = await readFile(path.join(__dirname, './config/wechat.txt'))
   let me = JSON.parse(data)
-  ctx.body=me
+  ctx.body = me
 })
 router.get('/us', async (ctx) => {
   ctx.body = ctx._matchedRoute + '---' + ctx._matchedRouteName
@@ -80,7 +80,7 @@ router.get('/query/:num', async (ctx) => {
     ctx.status = err.status || 500
   }
 })
-router.get('/order/:num',  async (ctx, next) => {
+router.get('/order/:num', async (ctx, next) => {
   let connection = ctx.connection
   let stream = new Stream.Transform()
   stream._transform = function (chunk, encoding, done) {
@@ -157,12 +157,18 @@ router.get('/order/:num',  async (ctx, next) => {
     ctx.status = err.status || 500
   }
 })
-router.get('/weixin',wechat)
-router.post('/weixin',xmlParser(),async (ctx)=>{
+router.get('/weixin', wechat)
+router.post('/weixin', xmlParser(), async (ctx) => {
   console.log(ctx.request.body)
   ctx.res.setHeader('Content-Type', 'application/xml')
-  let xml  = ctx.request.body.xml
-  let data = `<xml> <ToUserName>< ![CDATA${xml.ToUserName[0]}] ]</ToUserName> <FromUserName>< ![CDATA[${xml.FromUserName[0]}] ]></FromUserName> <CreateTime>${moment()}</CreateTime> <MsgType>< ![CDATA[text] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>`
+  let xml = ctx.request.body.xml
+  let data = `<xml>
+                <ToUserName>${xml.ToUserName[0]}</ToUserName>
+                <FromUserName>${xml.FromUserName[0]}</FromUserName>
+                <CreateTime>${moment().format('X')}</CreateTime>
+                <MsgType>text</MsgType>
+                <Content>你好</Content>
+            </xml>`
   console.log(data)
   ctx.body = data
 })
@@ -191,7 +197,7 @@ function format_html (arr) {
   return strArr.join('\n')
 }
 
-function readFile(url){
+function readFile (url) {
   return util.readFileAsync(url)
 }
 

@@ -42,7 +42,7 @@ Wechat.prototype.getAccessToken = config.getAccessToken
 Wechat.prototype.saveAccessToken = config.saveAccessToken
 
 
-module.exports = async function (ctx) {
+exports.g = async function (ctx) {
   let wechat = new Wechat(config)
   try {
     let file = await wechat.getAccessToken()
@@ -76,5 +76,29 @@ module.exports = async function (ctx) {
   }
   else {
     ctx.body = 'wrong'
+  }
+}
+
+exports.check = (ctx,next) =>{
+  let token = config.token
+  let nonce = ctx.query.nonce
+  let timestamp = ctx.query.timestamp
+  let signature = ctx.query.signature
+  let echostr = ctx.query.echostr
+
+  let str = [token, timestamp, nonce].sort().join('')
+
+  let sha = sha1(str)
+
+  if (sha !== signature) {
+    ctx.body = 'wrong'
+  }
+  else if(ctx.method === 'GET'){
+    console.log('get验证通过')
+    ctx.body = echostr
+  }
+  else {
+    console.log('post验证通过')
+    next()
   }
 }

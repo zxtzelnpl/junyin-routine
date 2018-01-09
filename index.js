@@ -19,13 +19,8 @@ connection.connect()
 
 
 const app = new Koa()
+app.context.connection = connection
 app
-    .use(async (ctx,next) => {
-      console.log('begin')
-      ctx.connection = connection
-      await next()
-      console.log('end')
-    })
     .use(inner1)
     .use(session(sessionConfig, app))
     .use(inner2)

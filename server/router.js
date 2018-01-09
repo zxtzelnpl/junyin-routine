@@ -157,8 +157,8 @@ router.get('/order/:num', async (ctx, next) => {
     ctx.status = err.status || 500
   }
 })
-router.get('/weixin', wechat)
-router.post('/weixin', xmlParser({
+router.get('/weixin', wechat.check)
+router.post('/weixin',wechat.check, xmlParser({
   xmlOptions: {
     explicitRoot: false,
     explicitArray: false

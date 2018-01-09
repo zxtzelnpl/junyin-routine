@@ -33,11 +33,16 @@ exports.tpl = function(content,message){
   }
 
   type = content.type||type
-  info.content = content
-  info.createTime = new Date().getTime()
-  info.msgType = type
-  info.toUserName = fromUserName
-  info.fromUserName = toUserName
+  // info.content = content
+  // info.createTime = new Date().getTime()
+  // info.msgType = type
+  // info.toUserName = fromUserName
+  // info.fromUserName = toUserName
+  info.Content = content
+  info.CreateTime = new Date().getTime()
+  info.MsgType = type
+  info.ToUserName = fromUserName
+  info.FromUserName = toUserName
 
   const xml2js = require('xml2js')
   let build = new xml2js.Builder({

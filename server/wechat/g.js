@@ -74,7 +74,7 @@ exports.check = async (ctx,next) =>{
   }
 }
 
-exports.WeChat = async () => {
+export async function WeChat () {
   let wechat = new Wechat(config)
   try {
     console.log('get the accesstoken')

@@ -170,7 +170,7 @@ router.post('/weixin', xmlParser({
   console.log(message)
   if(message.MsgType === 'event'){
     if(message.Event === 'subscribe'){
-      this.body = 'I am pain and I need to be crazy and crazy and crazy';
+      ctx.body = 'I am pain and I need to be crazy and crazy and crazy'
     }
   }
   else{

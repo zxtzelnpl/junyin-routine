@@ -94,11 +94,11 @@ exports.check = async (ctx,next) =>{
     ctx.body = 'wrong'
   }
   else if(ctx.method === 'GET'){
-    console.log('get验证通过')
+    console.log('get method and weixin check path')
     ctx.body = echostr
   }
   else {
-    console.log('post验证通过')
+    console.log('post method and weixin check path')
     await next()
   }
 }

@@ -3,9 +3,23 @@
 const sha1 = require('sha1')
 const request = require('request-promise-native');
 const config = require('../config/wechat')
-const prefix = 'https://api.weixin.qq.com/cgi-bin/token?'
+const prefix = 'https://api.weixin.qq.com/cgi-bin/'// url前缀
 const api = {
-  accessToken: prefix + 'grant_type=client_credential'
+  // 全局票据
+  accessToken: `${prefix}token?grant_type=client_credential`,// access_token获取
+  // js-sdk的临时票据
+  jsapiTicket:`${prefix}ticket/getticket?`, // jsapi_ticket获取
+  // 自定义菜单
+  menu:{
+    create:`${prefix}menu/create?`,// 自定义菜单创建
+    get:`${prefix}menu/get?`,// 自定义菜单查询
+    delete:`${prefix}menu/delete?`,// 自定义菜单删除
+    addconditional:`${prefix}menu/addconditional?`,// 创建个性化菜单
+    delconditional:`${prefix}menu/delconditional?`,// 删除个性化菜单
+    trymatch:`${prefix}menu/trymatch?`,// 测试个性化菜单匹配结果
+    getCurrent:`${prefix}get_current_selfmenu_info?`,// 获取自定义菜单配置
+  }
+
 }
 
 function Wechat (opts) {
@@ -36,12 +50,6 @@ Wechat.prototype.updateAccessToken = async function () {
   return data
 }
 
-Wechat.prototype.getAccessToken = config.getAccessToken
-
-Wechat.prototype.saveAccessToken = config.saveAccessToken
-
-
-
 exports.check = async (ctx,next) =>{
   let token = config.token
   let nonce = ctx.query.nonce
@@ -66,7 +74,7 @@ exports.check = async (ctx,next) =>{
   }
 }
 
-exports.accessToken = async () => {
+exports.WeChat = async () => {
   let wechat = new Wechat(config)
   try {
     console.log('get the accesstoken')

@@ -19,7 +19,6 @@ Wechat.prototype.isValidAccessToken = function (data) {
   if (!data || !data.access_token || !data.expires_in) {
     return false
   }
-  let access_token = data.access_token
   let expires_in = data.expires_in
   let now = (new Date().getTime())
   return now < expires_in;
@@ -106,9 +105,11 @@ exports.check = async (ctx,next) =>{
 exports.accessToken = async () => {
   let wechat = new Wechat(config)
   try {
+    console.log('get the accesstoken')
     let file = await wechat.getAccessToken()
     let data = JSON.parse(file)
     if (!wechat.isValidAccessToken(data)) {
+      console.log('accesstoken is expire')
       data = await wechat.updateAccessToken()
     }
     wechat.access_token = data.access_token
@@ -116,6 +117,7 @@ exports.accessToken = async () => {
     await wechat.saveAccessToken(data)
   }
   catch (e) {
+    console.log('get the accesstoken fail')
     let data = await wechat.updateAccessToken()
     wechat.access_token = data.access_token
     wechat.expires_in = data.expires_in

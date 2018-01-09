@@ -20,9 +20,10 @@ const port = process.env.PORT || 3000
 const connection = mysql.createConnection(mysqlConfig)
 connection.connect()
 
-
+/**生成app实例**/
 const app = new Koa()
 app.context.connection = connection
+process.env.NODE_ENV!=='env'&&(app.context.wechat = wechat.accessToken())
 app.context.wechat = wechat.accessToken()
 app
     .use(inner1)

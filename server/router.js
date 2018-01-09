@@ -167,12 +167,19 @@ router.post('/weixin', xmlParser({
 }), async (ctx) => {
   console.log(ctx.request.body)
   let message = ctx.request.body
-  let xml = util.tpl('<abbb>wososo</abbb>', message)
-  console.log(xml)
-  ctx.status = 200
-  ctx.type = 'application/xml'
-  ctx.body = xml
-
+  console.log(message)
+  if(message.MsgType === 'event'){
+    if(message.Event === 'subscribe'){
+      this.body = 'I am pain and I need to be crazy and crazy and crazy';
+    }
+  }
+  else{
+    let xml = util.tpl('<abbb>wososo</abbb>', message)
+    console.log(xml)
+    ctx.status = 200
+    ctx.type = 'application/xml'
+    ctx.body = xml
+  }
 })
 
 

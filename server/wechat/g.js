@@ -41,42 +41,6 @@ Wechat.prototype.getAccessToken = config.getAccessToken
 Wechat.prototype.saveAccessToken = config.saveAccessToken
 
 
-exports.g = async function (ctx) {
-  let wechat = new Wechat(config)
-  try {
-    let file = await wechat.getAccessToken()
-    let data = JSON.parse(file)
-    if (!wechat.isValidAccessToken(data)) {
-      data = await wechat.updateAccessToken()
-    }
-    wechat.access_token = data.access_token
-    wechat.expires_in = data.expires_in
-    await wechat.saveAccessToken(data)
-  }
-  catch (e) {
-    let data = await wechat.updateAccessToken()
-    wechat.access_token = data.access_token
-    wechat.expires_in = data.expires_in
-    await wechat.saveAccessToken(data)
-  }
-
-  let token = config.token
-  let nonce = ctx.query.nonce
-  let timestamp = ctx.query.timestamp
-  let signature = ctx.query.signature
-  let echostr = ctx.query.echostr
-
-  let str = [token, timestamp, nonce].sort().join('')
-
-  let sha = sha1(str)
-
-  if (sha === signature) {
-    ctx.body = echostr
-  }
-  else {
-    ctx.body = 'wrong'
-  }
-}
 
 exports.check = async (ctx,next) =>{
   let token = config.token

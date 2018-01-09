@@ -2,7 +2,10 @@
 
 const fs=require('fs');
 const xml2js = require('xml2js')
-const tpl = require('./tpl')
+let build = new xml2js.Builder({
+  rootName:'xml',
+  cdata:true
+})
 
 exports.readFileAsync = function(fpath,encoding){
   return new Promise(function(resolve,reject){
@@ -24,34 +27,17 @@ exports.writeFileAsync = function(fpath,content){
 
 exports.tpl = function(content,message){
   let info = {},
-      type = 'text',
-      fromUserName = message.FromUserName,
-      toUserName = message.ToUserName
-
+      type = 'text'
   if(Array.isArray(content)){
     type = 'news'
   }
 
   type = content.type||type
-  // info.content = content
-  // info.createTime = new Date().getTime()
-  // info.msgType = type
-  // info.toUserName = fromUserName
-  // info.fromUserName = toUserName
   info.Content = content
   info.CreateTime = new Date().getTime()
   info.MsgType = type
-  info.ToUserName = fromUserName
-  info.FromUserName = toUserName
+  info.ToUserName = message.FromUserName
+  info.FromUserName = message.ToUserName
 
-  const xml2js = require('xml2js')
-  let build = new xml2js.Builder({
-    // rootName:'xml',
-    // cdata:true
-  })
-  return build.buildObject({
-    xml:info
-  })
-
-  // return tpl.compiled(info)
+  return build.buildObject(info)
 }

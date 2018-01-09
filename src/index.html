@@ -72,11 +72,11 @@
     myHeaders.append('Content-Type', 'application/xml');
     let request = new Request('/weixin', {
       method: 'POST',
-      body:`<xml><MsgId>1234567890123456</MsgId></xml>`,
-      headers:myHeaders
+      body: "<xml><ToUserName>toUser</ToUserName><FromUserName>fromUser</FromUserName><CreateTime>1348831860</CreateTime><MsgType>text</MsgType><Content>this is a test</Content><MsgId>1234567890123456</MsgId></xml>",
+      headers: myHeaders
     });
     fetch(request)
-        .then(res => res.json())
+        .then(res => res.text())
         .then(json => {
           console.log(json)
         })

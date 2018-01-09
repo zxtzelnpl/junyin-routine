@@ -1,7 +1,6 @@
 const path = require('path')
 const Router = require('koa-router')
 const koaBody = require('koa-body')
-const xmlParser = require('koa-xml-body')
 const {string4, string2, string3, orderString} = require('./query-strings')
 const router = new Router()
 const moment = require('moment')
@@ -9,6 +8,7 @@ const Excel = require('exceljs')
 const Stream = require('stream')
 const wechat = require('./wechat/g')
 const util = require('./libs/util')
+const xmlParser = require('./libs/koa-xml-body')
 
 
 router.get('/', async (ctx) => {
@@ -158,19 +158,20 @@ router.get('/order/:num', async (ctx, next) => {
   }
 })
 router.get('/weixin', wechat)
-router.post('/weixin', xmlParser(), async (ctx) => {
-  console.log(ctx.request.body)
-  let _message = ctx.request.body.xml
-  let message = {
-    ToUserName:_message.ToUserName[0],
-    FromUserName:_message.FromUserName[0],
+router.post('/weixin', xmlParser({
+  xmlOptions: {
+    explicitRoot: false,
+    explicitArray: false
+
   }
-  // let xml = util.tpl('你好啊',message).slice(55)
-  let xml = util.tpl('你好啊',message)
+}), async (ctx) => {
+  console.log(ctx.request.body)
+  let message = ctx.request.body
+  let xml = util.tpl('你好啊', message)
   console.log(xml)
   ctx.status = 200
   ctx.type = 'application/xml'
-  ctx.body =xml
+  ctx.body = xml
 
 })
 

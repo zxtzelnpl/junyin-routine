@@ -9,7 +9,7 @@ const favicon = require('koa-favicon')
 
 /**引用router**/
 const router = require('./server/router')
-const WeChat = require('./server/wechat/g')
+const WeChat = require('./server/wechat')
 
 /**引用config**/
 const mysqlConfig = require('./server/config/mysql')

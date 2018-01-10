@@ -8,10 +8,11 @@ const router = new Router()
 const moment = require('moment')
 const Excel = require('exceljs')
 const Stream = require('stream')
-const wechat = require('./wechat/g')
+const wechat = require('./wechat')
 const util = require('./libs/util')
 const xmlParser = require('./libs/koa-xml-body')
 
+const menu = require('./wechat/menu')
 
 router.get('/', async (ctx) => {
   try {
@@ -186,6 +187,10 @@ router.post('/weixin',wechat.check, xmlParser({
     ctx.type = 'application/xml'
     ctx.body = xml
   }
+})
+router.get('/menu',async (ctx)=>{
+  let response = await ctx.wechat.createMenu(menu)
+  ctx.body = response
 })
 
 

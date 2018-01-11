@@ -8,11 +8,11 @@ const router = new Router()
 const moment = require('moment')
 const Excel = require('exceljs')
 const Stream = require('stream')
-const wechat = require('./wechat')
 const util = require('./libs/util')
 const request = require('request')
 const xmlParser = require('./libs/koa-xml-body')
 
+const check = require('./wechat/check')
 const menu = require('./wechat/menu')
 
 router.get('/', async (ctx) => {
@@ -161,8 +161,8 @@ router.get('/order/:num', async (ctx, next) => {
     ctx.status = err.status || 500
   }
 })
-router.get('/weixin', wechat.check)
-router.post('/weixin',wechat.check, xmlParser({
+router.get('/weixin', check)
+router.post('/weixin',check, xmlParser({
   xmlOptions: {
     explicitRoot: false,
     explicitArray: false
@@ -208,10 +208,6 @@ router.get('/menu',async (ctx)=>{
     ctx.body = 'we do nothing'
   }
 })
-router.get('/qrcode',async (ctx)=>{
-
-})
-
 
 function query (connection, str) {
   return new Promise((resolve, reject) => {

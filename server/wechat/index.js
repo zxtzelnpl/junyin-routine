@@ -1,8 +1,6 @@
 'use strict'
 
-const sha1 = require('sha1')
 const request = require('request-promise-native')
-const config = require('../config/wechat')
 const prefix = 'https://api.weixin.qq.com/cgi-bin/'// url前缀
 const api = {
   // 全局票据
@@ -84,50 +82,4 @@ Wechat.prototype.deleteMenu = async function (menu){
   return response
 }
 
-exports.check = async (ctx,next) =>{
-  let token = config.token
-  let nonce = ctx.query.nonce
-  let timestamp = ctx.query.timestamp
-  let signature = ctx.query.signature
-  let echostr = ctx.query.echostr
-
-  let str = [token, timestamp, nonce].sort().join('')
-
-  let sha = sha1(str)
-
-  if (sha !== signature) {
-    ctx.body = 'wrong'
-  }
-  else if(ctx.method === 'GET'){
-    console.log('get method and weixin check path')
-    ctx.body = echostr
-  }
-  else {
-    console.log('post method and weixin check path')
-    await next()
-  }
-}
-
-exports.WeChat =  async function () {
-  let wechat = new Wechat(config)
-  try {
-    console.log('get the accesstoken')
-    let file = await wechat.getAccessToken()
-    let data = JSON.parse(file)
-    if (!wechat.isValidAccessToken(data)) {
-      console.log('accesstoken is expire')
-      data = await wechat.updateAccessToken()
-    }
-    wechat.access_token = data.access_token
-    wechat.expires_in = data.expires_in
-    await wechat.saveAccessToken(data)
-  }
-  catch (e) {
-    console.log('get the accesstoken fail')
-    let data = await wechat.updateAccessToken()
-    wechat.access_token = data.access_token
-    wechat.expires_in = data.expires_in
-    await wechat.saveAccessToken(data)
-  }
-  return wechat
-}
+module.exports =  Wechat

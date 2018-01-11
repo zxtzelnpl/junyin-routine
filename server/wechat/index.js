@@ -51,15 +51,15 @@ Wechat.prototype.updateAccessToken = async function () {
 
 Wechat.prototype.createMenu = async function (menu){
   let accessToken = this.access_token
-  if(!this.isValidAccessToken(accessToken)){
-    console.log(accessToken)
-    console.log('accessToken is inVliad and we need to get a new')
-    accessToken =  await this.updateAccessToken()
-    this.access_token = accessToken.access_token
-    this.expires_in = accessToken.expires_in
-    await this.saveAccessToken(accessToken)
-  }
-  console.log(accessToken)
+  // if(!this.isValidAccessToken(accessToken)){
+  //   console.log(accessToken)
+  //   console.log('accessToken is inVliad and we need to get a new')
+  //   accessToken =  await this.updateAccessToken()
+  //   this.access_token = accessToken.access_token
+  //   this.expires_in = accessToken.expires_in
+  //   await this.saveAccessToken(accessToken)
+  // }
+  // console.log(accessToken)
 
 
   let url = `${api.menu.create}access_token=${accessToken}`

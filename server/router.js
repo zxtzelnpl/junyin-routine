@@ -190,8 +190,23 @@ router.post('/weixin',wechat.check, xmlParser({
   }
 })
 router.get('/menu',async (ctx)=>{
-  let response = await ctx.wechat.createMenu(menu)
-  ctx.body = response
+  let {action} = ctx.query
+  console.log(action)
+  if(action === 'create'){
+    let response = await ctx.wechat.createMenu(menu)
+    ctx.body = response
+  }
+  else if(action === 'get'){
+    let response = await ctx.wechat.getMenu()
+    ctx.body = response
+  }
+  else if(action === 'delete'){
+    let response = await ctx.wechat.deleteMenu()
+    ctx.body = response
+  }
+  else{
+    ctx.body = 'we do nothing'
+  }
 })
 router.get('/qrcode',async (ctx)=>{
 

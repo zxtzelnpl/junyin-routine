@@ -52,6 +52,7 @@ Wechat.prototype.updateAccessToken = async function () {
 Wechat.prototype.createMenu = async function (menu){
   let accessToken = this.access_token
   if(!this.isValidAccessToken(accessToken)){
+    console.log('accessToken 已经过去了')
     accessToken =  await this.updateAccessToken()
     this.access_token = accessToken.access_token
     this.expires_in = accessToken.expires_in

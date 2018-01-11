@@ -53,9 +53,9 @@ Wechat.prototype.createMenu = async function (menu){
   let accessToken = this.access_token
   if(!this.isValidAccessToken(accessToken)){
     accessToken =  await this.updateAccessToken()
-    this.access_token = data.access_token
-    this.expires_in = data.expires_in
-    await this.saveAccessToken(data)
+    this.access_token = accessToken.access_token
+    this.expires_in = accessToken.expires_in
+    await this.saveAccessToken(accessToken)
   }
 
 

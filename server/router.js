@@ -10,6 +10,7 @@ const Excel = require('exceljs')
 const Stream = require('stream')
 const wechat = require('./wechat')
 const util = require('./libs/util')
+const request = require('request')
 const xmlParser = require('./libs/koa-xml-body')
 
 const menu = require('./wechat/menu')
@@ -191,6 +192,9 @@ router.post('/weixin',wechat.check, xmlParser({
 router.get('/menu',async (ctx)=>{
   let response = await ctx.wechat.createMenu(menu)
   ctx.body = response
+})
+router.get('/qrcode',async (ctx)=>{
+
 })
 
 

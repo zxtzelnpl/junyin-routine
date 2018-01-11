@@ -1,6 +1,7 @@
 'use strict'
 
 const request = require('request-promise-native')
+const config = require('../config/wechat')
 const prefix = 'https://api.weixin.qq.com/cgi-bin/'// url前缀
 const api = {
   // 全局票据
@@ -19,11 +20,11 @@ const api = {
   }
 }
 
-function Wechat (opts) {
-  this.appID = opts.appID
-  this.appSecret = opts.appSecret
-  this.getAccessToken = opts.getAccessToken
-  this.saveAccessToken = opts.saveAccessToken
+function Wechat () {
+  this.appID = config.appID
+  this.appSecret = config.appSecret
+  this.getAccessToken = config.getAccessToken
+  this.saveAccessToken = config.saveAccessToken
 }
 
 Wechat.prototype.isValidAccessToken = function (data) {
@@ -39,8 +40,10 @@ Wechat.prototype.updateAccessToken = async function () {
   let appID = this.appID
   let appSecret = this.appSecret
   let url = api.accessToken + '&appid=' + appID + '&secret=' + appSecret
-  let response = await request({url: url, json: true})//{ errcode: 40164, errmsg: 'invalid ip 101.81.67.16, not in whitelist hint: [vEJBZa04161512]' }
+  let response = await request({url: url, json: true})
+  console.log('##updateAccessToken##')
   console.log(response)
+  console.log('##updateAccessToken##')
   let data = response
   let now = (new Date()).getTime()
   data.expires_in = now + (data.expires_in - 20) * 1000
@@ -48,17 +51,12 @@ Wechat.prototype.updateAccessToken = async function () {
 }
 
 Wechat.prototype.createMenu = async function (menu){
-  let accessToken = this.access_token
-  // if(!this.isValidAccessToken(accessToken)){
-  //   console.log(accessToken)
-  //   console.log('accessToken is inVliad and we need to get a new')
-  //   accessToken =  await this.updateAccessToken()
-  //   this.access_token = accessToken.access_token
-  //   this.expires_in = accessToken.expires_in
-  //   await this.saveAccessToken(accessToken)
-  // }
-  // console.log(accessToken)
-
+  /**这边需要做更改**/
+  let accessToken = await this.getAccessToken()
+  if(!this.isValidAccessToken(accessToken)){
+    accessToken = await this.updateAccessToken()
+    await this.saveAccessToken(accessToken)
+  }
 
   let url = `${api.menu.create}access_token=${accessToken}`
   let response = await request({method:'POST',body:menu,url:url,json:true})
@@ -66,18 +64,30 @@ Wechat.prototype.createMenu = async function (menu){
   return response
 }
 
-Wechat.prototype.getMenu = async function (menu){
-  let accessToken = this.access_token
+Wechat.prototype.getMenu = async function (){
+  /**这边需要做更改**/
+  let accessToken = await this.getAccessToken()
+  if(!this.isValidAccessToken(accessToken)){
+    accessToken = await this.updateAccessToken()
+    await this.saveAccessToken(accessToken)
+  }
+
   let url = `${api.menu.get}access_token=${accessToken}`
-  let response = await request({method:'POST',body:menu,url:url,json:true})
+  let response = await request({method:'GET',url:url,json:true})
   console.log(response)
   return response
 }
 
-Wechat.prototype.deleteMenu = async function (menu){
-  let accessToken = this.access_token
+Wechat.prototype.deleteMenu = async function (){
+  /**这边需要做更改**/
+  let accessToken = await this.getAccessToken()
+  if(!this.isValidAccessToken(accessToken)){
+    accessToken = await this.updateAccessToken()
+    await this.saveAccessToken(accessToken)
+  }
+
   let url = `${api.menu.delete}access_token=${accessToken}`
-  let response = await request({method:'POST',body:menu,url:url,json:true})
+  let response = await request({method:'GET',url:url,json:true})
   console.log(response)
   return response
 }

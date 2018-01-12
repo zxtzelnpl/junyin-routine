@@ -192,21 +192,20 @@ router.post('/weixin',check, xmlParser({
 router.get('/menu',async (ctx)=>{
   let {action} = ctx.query
   console.log(action)
+  let resopnse
   if(action === 'create'){
-    let response = await ctx.wechat.createMenu(menu)
-    ctx.body = response
+    resopnse = await ctx.wechat.createMenu(menu)
   }
   else if(action === 'get'){
-    let response = await ctx.wechat.getMenu()
-    ctx.body = response
+    resopnse = await ctx.wechat.getMenu()
   }
   else if(action === 'delete'){
-    let response = await ctx.wechat.deleteMenu()
-    ctx.body = response
+    resopnse = await ctx.wechat.deleteMenu()
   }
   else{
-    ctx.body = 'we do nothing'
+    resopnse = 'we do nothing'
   }
+  ctx.body = resopnse
 })
 
 function query (connection, str) {

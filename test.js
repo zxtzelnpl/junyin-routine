@@ -8,6 +8,6 @@
 //   'age':19
 // }}))
 
-console.log(JSON.parse({
-  zxt:19
-}))
+// console.log(JSON.parse({
+//   zxt:19
+// }))

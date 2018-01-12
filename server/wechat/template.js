@@ -1,36 +1,33 @@
-module.exports = {
-  "touser": "opZOK1jIElSwedArRI",
-  "template_id": "FWoTv3kUCUvttpTOXkhBI5IAcwAjfXBprXWNtnSfH0U",
-  "url": "http://weixin.qq.com/download",
-  "topcolor": "#FF0000",
-  "data": {
-    "User": {
-      "value": "黄先生",
-      "color": "#173177"
-    },
-    "Date": {
-      "value": "06月07日 19时24分",
-      "color": "#173177"
-    },
-    "CardNumber": {
-      "value": "0426",
-      "color": "#173177"
-    },
-    "Type": {
-      "value": "消费",
-      "color": "#173177"
-    },
-    "Money": {
-      "value": "人民币260.00元",
-      "color": "#173177"
-    },
-    "DeadTime": {
-      "value": "06月07日19时24分",
-      "color": "#173177"
-    },
-    "Left": {
-      "value": "6504.09",
-      "color": "#173177"
-    }
+module.exports =
+{
+  "touser":"opZOK1jIElSwedArRI",
+    "template_id":"KTAha7aGMrlaIkvcTBGJFhbIaxGsGhP53OFg_mGctWA",
+    "url":"https://www.baidu.com/",
+    "topcolor":"#FF0000#FF0000",
+    "data":{
+  "first": {
+    "value":"恭喜你购买成功！",
+        "color":"颜色#173177"
+  },
+  "keyword1":{
+    "value":"产品名称",
+        "color":"颜色#173177"
+  },
+  "keyword2":{
+    "value":"订单号",
+        "color":"颜色#173177"
+  },
+  "keyword3":{
+    "value":"订单价格",
+        "color":"#173177"
+  },
+  "keyword4":{
+    "value":"订购时间",
+        "color":"颜色#173177"
+  },
+  "remark":{
+    "value":"欢迎再次购买！",
+        "color":"颜色#173177"
   }
 }
+};

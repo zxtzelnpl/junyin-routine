@@ -8,6 +8,8 @@ const api = {
   accessToken: `${prefix}token?grant_type=client_credential`,// access_token获取
   // js-sdk的临时票据
   jsapiTicket:`${prefix}ticket/getticket?`, // jsapi_ticket获取
+  // 模板消息
+  template:`${prefix}/message/template/send?`,// 模板消息
   // 自定义菜单
   menu:{
     create:`${prefix}menu/create?`,// 自定义菜单创建
@@ -18,6 +20,7 @@ const api = {
     trymatch:`${prefix}menu/trymatch?`,// 测试个性化菜单匹配结果
     getCurrent:`${prefix}get_current_selfmenu_info?`,// 获取自定义菜单配置
   }
+
 }
 
 function Wechat () {
@@ -101,6 +104,20 @@ Wechat.prototype.deleteMenu = async function (){
   /**这边需要做更改**/
   let url = `${api.menu.delete}access_token=${accessToken.access_token}`
   let response = await request({method:'GET',url:url,json:true})
+  console.log(response)
+  return response
+}
+
+Wechat.prototype.sendTemplate = async function(template){
+  /**这边需要做更改**/
+  let accessToken = await this.getAccessToken()
+  if(!this.isValidAccessToken(accessToken)){
+    accessToken = await this.updateAccessToken()
+    await this.saveAccessToken(accessToken)
+  }
+  /**这边需要做更改**/
+  let url = `${api.menu.delete}access_token=${accessToken.access_token}`
+  let response = await request({method:'POST',body:template,url:url,json:true})
   console.log(response)
   return response
 }

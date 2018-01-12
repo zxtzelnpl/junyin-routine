@@ -14,6 +14,7 @@ const xmlParser = require('./libs/koa-xml-body')
 
 const check = require('./wechat/check')
 const menu = require('./wechat/menu')
+const template = require('./wechat/template')
 
 router.get('/', async (ctx) => {
   try {
@@ -206,6 +207,11 @@ router.get('/menu',async (ctx)=>{
     resopnse = 'we do nothing'
   }
   ctx.body = resopnse
+})
+router.get('/send',async (ctx)=>{
+  let response
+  resopnse = await ctx.wechat.sendTemplate(template)
+  ctx.body=response
 })
 
 function query (connection, str) {

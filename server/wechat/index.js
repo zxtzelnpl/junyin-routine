@@ -81,7 +81,7 @@ Wechat.prototype.getMenu = async function (){
   console.log(accessToken)
   console.log('##getMenu##')
   /**这边需要做更改**/
-  let url = `${api.menu.get}access_token=${accessToken}`
+  let url = `${api.menu.get}access_token=${accessToken.access_token}`
 
   console.log(url)
   let response = await request({method:'GET',url:url,json:true})

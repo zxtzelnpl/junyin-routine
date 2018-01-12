@@ -7,27 +7,27 @@ module.exports =
     "data":{
   "first": {
     "value":"恭喜你购买成功！",
-        "color":"颜色#173177"
+        "color":"#173177"
   },
   "keyword1":{
     "value":"产品名称",
-        "color":"颜色#173177"
+        "color":"#173177"
   },
   "keyword2":{
     "value":"订单号",
-        "color":"颜色#173177"
+        "color":"#173177"
   },
   "keyword3":{
     "value":"订单价格",
-        "color":"#173177"
+        "color":"#67f454"
   },
   "keyword4":{
     "value":"订购时间",
-        "color":"颜色#173177"
+        "color":"#ba5612"
   },
   "remark":{
     "value":"欢迎再次购买！",
-        "color":"颜色#173177"
+        "color":"#23453"
   }
 }
 };

@@ -1,6 +1,6 @@
 module.exports =
     {
-      "touser": "opZOK1jIElSwedArRI",
+      "touser": "opZOK1jIElSwedArRI-g2h15EwYc",
       "template_id": "KTAha7aGMrlaIkvcTBGJFhbIaxGsGhP53OFg_mGctWA",
       "url": "https://www.baidu.com/",
       "topcolor": "#FF0000",

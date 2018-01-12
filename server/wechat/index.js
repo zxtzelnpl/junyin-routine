@@ -28,10 +28,12 @@ function Wechat () {
 }
 
 Wechat.prototype.isValidAccessToken = function (data) {
+  console.log('###isValidAccessToken###')
+  console.log(data)
   if (!data || !data.access_token || !data.expires_in) {
     return false
   }
-  let expires_in = data.expires_in
+  let expires_in = parseInt(data.expires_in)
   let now = (new Date().getTime())
   return now < expires_in;
 }

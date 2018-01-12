@@ -208,12 +208,13 @@ router.get('/menu',async (ctx)=>{
   }
   ctx.body = resopnse
 })
-router.get('/send',async (ctx)=>{
+router.get('/send',async (ctx)=>  {
   let response = await ctx.wechat.sendTemplate(template)
   ctx.body=response
 })
 router.get('/user',async (ctx)=>{
-
+  let response = await ctx.wechat.getUser()
+  ctx.body=response
 })
 
 function query (connection, str) {

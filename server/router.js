@@ -212,6 +212,9 @@ router.get('/send',async (ctx)=>{
   let response = await ctx.wechat.sendTemplate(template)
   ctx.body=response
 })
+router.get('/user',async (ctx)=>{
+
+})
 
 function query (connection, str) {
   return new Promise((resolve, reject) => {

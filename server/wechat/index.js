@@ -9,7 +9,9 @@ const api = {
   // js-sdk的临时票据
   jsapiTicket:`${prefix}ticket/getticket?`, // jsapi_ticket获取
   // 模板消息
-  template:`${prefix}/message/template/send?`,// 模板消息
+  template:`${prefix}message/template/send?`,// 模板消息
+  // 获取用户
+  user:`${prefix}user/get?`,
   // 自定义菜单
   menu:{
     create:`${prefix}menu/create?`,// 自定义菜单创建
@@ -121,6 +123,21 @@ Wechat.prototype.sendTemplate = async function(template){
   let response = await request({method:'POST',body:template,url:url,json:true})
   console.log(response)
   return response
+}
+
+Wechat.prototype.getUser = async function(){
+  /**这边需要做更改**/
+  let accessToken = await this.getAccessToken()
+  if(!this.isValidAccessToken(accessToken)){
+    accessToken = await this.updateAccessToken()
+    await this.saveAccessToken(accessToken)
+  }
+  /**这边需要做更改**/
+  let url = `${api.user}access_token=${accessToken.access_token}&next_openid=`
+  let response = await request({method:'GET',url:url})
+  console.log(response)
+  return response
+
 }
 
 module.exports =  Wechat

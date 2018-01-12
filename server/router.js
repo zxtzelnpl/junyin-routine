@@ -209,8 +209,7 @@ router.get('/menu',async (ctx)=>{
   ctx.body = resopnse
 })
 router.get('/send',async (ctx)=>{
-  let response
-  resopnse = await ctx.wechat.sendTemplate(template)
+  let response = await ctx.wechat.sendTemplate(template)
   ctx.body=response
 })
 

@@ -60,7 +60,7 @@ Wechat.prototype.createMenu = async function (menu){
     await this.saveAccessToken(accessToken)
   }
   /**这边需要做更改**/
-  let url = `${api.menu.create}access_token=${accessToken}`
+  let url = `${api.menu.create}access_token=${accessToken.access_token}`
   let response = await request({method:'POST',body:menu,url:url,json:true})
   console.log(response)
   return response
@@ -99,7 +99,7 @@ Wechat.prototype.deleteMenu = async function (){
     await this.saveAccessToken(accessToken)
   }
   /**这边需要做更改**/
-  let url = `${api.menu.delete}access_token=${accessToken}`
+  let url = `${api.menu.delete}access_token=${accessToken.access_token}`
   let response = await request({method:'GET',url:url,json:true})
   console.log(response)
   return response

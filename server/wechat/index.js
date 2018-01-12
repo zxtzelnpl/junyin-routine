@@ -119,7 +119,7 @@ Wechat.prototype.sendTemplate = async function(template){
     await this.saveAccessToken(accessToken)
   }
   /**这边需要做更改**/
-  let url = `${api.menu.delete}access_token=${accessToken.access_token}`
+  let url = `${api.template}access_token=${accessToken.access_token}`
   let response = await request({method:'POST',body:template,url:url,json:true})
   console.log(response)
   return response

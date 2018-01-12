@@ -33,6 +33,7 @@ function Wechat () {
 Wechat.prototype.isValidAccessToken = function (data) {
   console.log('###isValidAccessToken###')
   console.log(data)
+  console.log('###isValidAccessToken###')
   if (!data || !data.access_token || !data.expires_in) {
     return false
   }

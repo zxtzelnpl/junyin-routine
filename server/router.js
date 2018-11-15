@@ -162,6 +162,12 @@ router.get('/order/:num', async (ctx, next) => {
     ctx.status = err.status || 500
   }
 })
+
+
+
+
+
+
 router.get('/weixin', check)
 router.post('/weixin',check, xmlParser({
   xmlOptions: {
